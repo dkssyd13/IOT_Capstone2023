@@ -1,0 +1,130 @@
+#include <SoftwareSerial.h>
+
+void setup()
+{
+  Serial.begin(9600); //
+}
+void loop() {
+int vibration1F_1_total = 0;
+int vibration1F_1_1s_total = 0;
+int vibration1F_1_1s_avg =0;
+int vibration1F_1_index[60];
+int vibration1F_1_avg = 0;  
+int vibration1F_1_1s_index[20];
+
+int vibration1F_2_total = 0;
+int vibration1F_2_1s_total = 0;
+int vibration1F_2_1s_avg =0;
+int vibration1F_2_index[60];
+int vibration1F_2_avg = 0;  
+int vibration1F_2_1s_index[20];
+
+int vibration1F_3_total = 0;
+int vibration1F_3_1s_total = 0;
+int vibration1F_3_1s_avg =0;
+int vibration1F_3_index[60];
+int vibration1F_3_avg = 0;  
+int vibration1F_3_1s_index[20];
+
+int vibration1F_4_total = 0;
+int vibration1F_4_1s_total = 0;
+int vibration1F_4_1s_avg =0;
+int vibration1F_4_index[60];
+int vibration1F_4_avg = 0;  
+int vibration1F_4_1s_index[20];
+
+for (int i =0; i < 60; i++) {
+
+  for (int k =0; k < 20; k++) {
+
+    vibration1F_1_1s_index[k] = analogRead(A0);
+    vibration1F_2_1s_index[k] = analogRead(A1);
+    vibration1F_3_1s_index[k] = analogRead(A2);
+    vibration1F_4_1s_index[k] = analogRead(A3);
+
+    for( int l=0; l < 20; l++) {
+
+	   vibration1F_1_1s_total = vibration1F_1_1s_total +vibration1F_1_1s_index[l];
+     vibration1F_2_1s_total = vibration1F_2_1s_total +vibration1F_2_1s_index[l];
+     vibration1F_3_1s_total = vibration1F_3_1s_total +vibration1F_3_1s_index[l];
+     vibration1F_4_1s_total = vibration1F_4_1s_total +vibration1F_4_1s_index[l];
+
+    }    
+
+   vibration1F_1_1s_avg = vibration1F_1_1s_total/20.0;
+   vibration1F_2_1s_avg = vibration1F_2_1s_total/20.0;
+   vibration1F_3_1s_avg = vibration1F_3_1s_total/20.0;
+   vibration1F_4_1s_avg = vibration1F_4_1s_total/20.0;
+
+   vibration1F_1_1s_total = 0;
+   vibration1F_2_1s_total = 0;
+   vibration1F_3_1s_total = 0;
+   vibration1F_4_1s_total = 0;
+
+
+   delay(50);
+
+  }
+
+ vibration1F_1_index[i] = vibration1F_1_1s_avg;
+ vibration1F_2_index[i] = vibration1F_2_1s_avg;
+ vibration1F_3_index[i] = vibration1F_3_1s_avg;
+ vibration1F_4_index[i] = vibration1F_4_1s_avg;
+
+
+ for( int j=0; j < 60; j++) {
+
+ vibration1F_1_total = vibration1F_1_total + vibration1F_1_index[j];
+ vibration1F_2_total = vibration1F_2_total + vibration1F_2_index[j];
+ vibration1F_3_total = vibration1F_3_total + vibration1F_3_index[j];
+ vibration1F_4_total = vibration1F_4_total + vibration1F_4_index[j];
+
+ }
+
+ vibration1F_1_avg = vibration1F_1_total/60.0;
+ vibration1F_2_avg = vibration1F_2_total/60.0;
+ vibration1F_3_avg = vibration1F_3_total/60.0;
+ vibration1F_4_avg = vibration1F_4_total/60.0;
+
+ vibration1F_1_total = 0;
+ vibration1F_2_total = 0;
+ vibration1F_3_total = 0;
+ vibration1F_4_total = 0;
+
+// '{"1" : [[1,2] ,[3,4],[5,6],[7,8]]}'
+// 60초 평균먼저 , 그 다음에 1초 평균
+
+ Serial.print("'{\"1\" : [[");
+
+ Serial.print(vibration1F_1_avg);
+ Serial.print(",");
+ Serial.print(vibration1F_1_1s_avg);
+ Serial.print("] ,[");
+
+ Serial.print(vibration1F_2_avg);
+ Serial.print(",");
+ Serial.print(vibration1F_2_1s_avg);
+ Serial.print("] ,[");
+
+  Serial.print(vibration1F_3_avg);
+  Serial.print(",");
+  Serial.print(vibration1F_3_1s_avg);
+  Serial.print("] ,[");
+
+  Serial.print(vibration1F_4_avg);
+  Serial.print(",");
+  Serial.print(vibration1F_4_1s_avg);
+  Serial.print("]]}");
+  Serial.println();
+
+
+//  Serial.print("60초평균 : ");
+//  Serial.println(vibration1F_avg);
+//  Serial.print(" 1초평균 : ");
+//  Serial.println(vibration1F_1s_avg);
+
+ }
+}
+
+
+

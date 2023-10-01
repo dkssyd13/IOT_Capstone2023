@@ -1,0 +1,3 @@
+global PORT, RATE 
+PORT='COM5'
+RATE= 9600
